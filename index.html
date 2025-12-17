@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIフィットネスアプリ - スマホ1台で、あなた専属のAIトレーナー</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ヘッダー */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s;
+	    color: black;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            color: black;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* セクション共通 */
+        section {
+            padding: 80px 0;
+        }
+
+        section:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        h2 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        /* 特徴セクション */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        /* 種目セクション */
+        .exercises {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .exercise-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .exercise-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .difficulty {
+            color: #ff9800;
+            margin: 10px 0;
+        }
+
+        /* 料金セクション */
+        .pricing-card {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 48px;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .price span {
+            font-size: 24px;
+        }
+
+        .trial-badge {
+            background: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        /* 使い方セクション */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .step-card {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        /* 注意事項セクション */
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ff9800;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .warning h3 {
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+
+        /* FAQセクション */
+        .faq-item {
+            background: white;
+            padding: 25px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .faq-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        /* フッター */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.7;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">💪 AIフィットネス</div>
+            <div class="nav-links">
+                <a href="#features">特徴</a>
+                <a href="#exercises">種目</a>
+                <a href="#pricing">料金</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>スマホ1台で、あなた専属のAIトレーナー</h1>
+            <p>カメラでフォームをリアルタイムチェック｜月額500円｜1週間無料トライアル</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">今すぐ無料で始める</a>
+                <a href="#" class="btn btn-secondary">詳しく見る</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2>4つの差別化ポイント</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>スマホだけで完結</h3>
+                    <p>専用機器は一切不要。お持ちのスマートフォンだけでパーソナルトレーニングが始められます。初期費用0円。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>リアルタイムフォームチェック</h3>
+                    <p>AIが体の動きを33ポイントで分析。「膝がつま先より前に出ています」など音声でアドバイス。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>プライバシー最優先</h3>
+                    <p>カメラ映像はスマホの外に出ません。オンデバイス処理で完全プライバシー保護。GDPR完全対応。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>月額500円の手軽さ</h3>
+                    <p>パーソナルトレーナーの1/10以下。ジム会費より安く、1週間無料でお試し可能。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="exercises">
+        <div class="container">
+            <h2>対応トレーニング種目</h2>
+            <div class="exercises">
+                <div class="exercise-card">
+                    <h3>スクワット</h3>
+                    <p>🏋️ 器具不要</p>
+                    <p class="difficulty">★☆☆ 初級</p>
+                    <p>下半身強化</p>
+                </div>
+                <div class="exercise-card">
+                    <h3>プッシュアップ</h3>
+                    <p>🏋️ 器具不要</p>
+                    <p class="difficulty">★☆☆ 初級</p>
+                    <p>上半身強化</p>
+                </div>
+                <div class="exercise-card">
+                    <h3>アームカール</h3>
+                    <p>🏋️ ダンベル</p>
+                    <p class="difficulty">★☆☆ 初級</p>
+                    <p>腕の筋肉</p>
+                </div>
+                <div class="exercise-card">
+                    <h3>サイドレイズ</h3>
+                    <p>🏋️ ダンベル</p>
+                    <p class="difficulty">★★☆ 中級</p>
+                    <p>肩の筋肉</p>
+                </div>
+                <div class="exercise-card">
+                    <h3>ショルダープレス</h3>
+                    <p>🏋️ ダンベル</p>
+                    <p class="difficulty">★★☆ 中級</p>
+                    <p>肩・腕</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <div class="container">
+            <h2>シンプルな料金プラン</h2>
+            <div class="pricing-card">
+                <div class="trial-badge">1週間無料トライアル</div>
+                <h3>月額プラン</h3>
+                <div class="price">¥500<span>/月</span></div>
+                <ul style="text-align: left; margin: 30px 0;">
+                    <li>✅ 全機能使い放題</li>
+                    <li>✅ リアルタイムフォームチェック</li>
+                    <li>✅ トレーニング記録無制限</li>
+                    <li>✅ 音声ガイダンス</li>
+                    <li>✅ いつでもキャンセル可能</li>
+                </ul>
+                <a href="#" class="btn btn-primary">無料トライアルを始める</a>
+                <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                    ※登録後7日間は完全無料<br>
+                    ※期間終了3日前に通知<br>
+                    ※クレジットカード・デビットカード対応
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>簡単3ステップで始められます</h2>
+            <div class="steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>アプリをダウンロード</h3>
+                    <p>iOS 15.0以上、Android 8.0以上に対応</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>無料アカウント作成</h3>
+                    <p>メールアドレスまたはGoogle/Appleアカウントで登録</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>トレーニング開始</h3>
+                    <p>種目を選んで、カメラの前に立つだけ</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>こんな方におすすめ</h2>
+            <div style="max-width: 600px; margin: 0 auto; text-align: left;">
+                <p style="margin-bottom: 15px;">✅ ジムに通う時間がない方</p>
+                <p style="margin-bottom: 15px;">✅ 正しいフォームを知りたい初心者</p>
+                <p style="margin-bottom: 15px;">✅ 自宅でトレーニングしたい方</p>
+                <p style="margin-bottom: 15px;">✅ トレーニング記録を残したい方</p>
+                <p style="margin-bottom: 15px;">✅ パーソナルトレーナーは高いと感じる方</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2>⚠️ 重要な注意事項</h2>
+            <div class="warning">
+                <h3>このアプリでできないこと</h3>
+                <p>✗ 病気やケガの診断（医療行為ではありません）</p>
+                <p>✗ ケガをしない保証（あくまで参考情報です）</p>
+                <p>✗ 効果の保証（個人差があります）</p>
+                <p>✗ リハビリのサポート（医療専門家にご相談ください）</p>
+                <p style="margin-top: 20px; font-weight: bold;">
+                    このアプリは参考情報を提供するものです。体に不安がある方は、必ず医師や専門家にご相談ください。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="container">
+            <h2>よくある質問</h2>
+            <div class="faq-item">
+                <h3>Q1: 本当にスマホだけで使えますか？</h3>
+                <p>A: はい。追加の機器は一切不要です。お持ちのスマートフォンのカメラだけで利用できます。</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q2: ダンベルは必要ですか？</h3>
+                <p>A: スクワットとプッシュアップはダンベル不要です。3種目はダンベルを使用しますが、ペットボトルなどでも代用可能です。</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q3: 解約はいつでもできますか？</h3>
+                <p>A: はい。アプリ内からいつでも解約できます。違約金などは一切ありません。</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q4: データは安全ですか？</h3>
+                <p>A: カメラ映像はスマホの外に出ません。データは暗号化して保存され、GDPR完全準拠です。</p>
+            </div>
+            <div class="faq-item">
+                <h3>Q5: 18歳未満でも使えますか？</h3>
+                <p>A: 13歳以上（日本）、16歳以上（ヨーロッパ）で、保護者の同意が必要です。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <div>
+                    <h4>アプリについて</h4>
+                    <a href="#">特徴</a>
+                    <a href="#">対応種目</a>
+                    <a href="#">料金プラン</a>
+                    <a href="#">使い方</a>
+                </div>
+                <div>
+                    <h4>サポート</h4>
+                    <a href="#">よくある質問</a>
+                    <a href="#">お問い合わせ</a>
+                    <a href="#">ヘルプセンター</a>
+                </div>
+                <div>
+                    <h4>法的情報</h4>
+                    <a href="#">利用規約</a>
+                    <a href="#">プライバシーポリシー</a>
+                    <a href="#">特定商取引法</a>
+                    <a href="#">GDPR対応</a>
+                </div>
+                <div>
+                    <h4>運営情報</h4>
+                    <a href="#">会社概要</a>
+                    <a href="#">採用情報</a>
+                    <a href="#">お知らせ</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 AIフィットネスアプリ. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
